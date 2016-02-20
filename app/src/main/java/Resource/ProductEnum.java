@@ -20,12 +20,6 @@ public enum ProductEnum
     RS_2_24_GM_M ("RS_1/24 gm", Type.MOTOR, BodyType.GUN_METAL, Phase.TWO, HP.HP_2, Stage.STAGE_24),
     RS_2_24_GM_P ("RS_1/24 gm", Type.PUMP, BodyType.GUN_METAL, Phase.TWO, HP.HP_2, Stage.STAGE_24);
 
-/*    RS_1_28_SS,
-    RS_1_30_SS,
-    RS_1_20_GM,
-    RS_1_22_GM,
-    RS_1_24_GM;*/
-
     public String displayedName;
     public Type type;
     public BodyType bodyType;
