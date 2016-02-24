@@ -45,7 +45,7 @@ public class ProductActivity extends ActionBarActivity {
         bodyType.setText(aInProduct.getBodyType().getBodyType());
         hp.setText(aInProduct.getHp().getString());
         phase.setText(aInProduct.getPhase().name());
-        stage.setText(aInProduct.getStage().getStage());
+        stage.setText(String.valueOf(aInProduct.getStage().getStage()));
         type.setText(aInProduct.getType().name());
     }
 }

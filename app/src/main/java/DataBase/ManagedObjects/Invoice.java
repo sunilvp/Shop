@@ -3,6 +3,8 @@ package DataBase.ManagedObjects;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.DataType;
 
+import java.util.Date;
+
 /**
  * Created by suvp on 2/23/2016.
  */
@@ -16,13 +18,17 @@ public class Invoice {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Product product;
 
+    @DatabaseField
+    Date date;
+
     Invoice()
     {}
 
-    public Invoice(int aInInvoiceNumber, Product aInProduct)
+    public Invoice(int aInInvoiceNumber, Product aInProduct,Date aInDate)
     {
         invoiceNumber = aInInvoiceNumber;
         product = aInProduct;
+        date = aInDate;
     }
 
     public int getId() {
@@ -47,5 +53,13 @@ public class Invoice {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

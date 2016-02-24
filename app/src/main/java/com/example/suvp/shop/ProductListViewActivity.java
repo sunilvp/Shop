@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import DataBase.ManagedObjects.Invoice;
@@ -39,32 +42,40 @@ public class ProductListViewActivity extends ListActivity
     private void getDbData()
     {
         // get our dao
-        RuntimeExceptionDao<Product, Integer> productDao = getHelper().getProductDAO();
-        RuntimeExceptionDao<Invoice, Integer> invoiceDao = getHelper().getInvoiceDataDao();
+        final RuntimeExceptionDao<Product, Integer> productDao = getHelper().getProductDAO();
+        final RuntimeExceptionDao<Invoice, Integer> invoiceDao = getHelper().getInvoiceDataDao();
 
         // query for all of the data objects in the database
         productsList = productDao.queryForAll();
-        Product[] lProductArray = new Product[productsList.size()];
-        int i=0;
-        for(Product lProduct : productsList)
-        {
-            lProductArray[i++]= lProduct;
-        }
 
-        Invoice lInvoice = new Invoice(1234, productsList.get(0));
+        Date lDate = new Date();
+        Invoice lInvoice = new Invoice(1234, productsList.get(0), new Date());
         invoiceDao.create(lInvoice);
         Log.i(LOG_TAG, "Creating Invoice Object with data ");
 
         // query for all of the data objects in the database
         List<Invoice> listInvoice = invoiceDao.queryForAll();
         Invoice lInvoiceReceived =  listInvoice.get(0);
+        Date lDateReceived = lInvoiceReceived.getDate();
+        Log.i(LOG_TAG, "Received Invoice from DB" + lDateReceived.getTime());
 
-        Log.i(LOG_TAG, "Received Invoice from DB"+ lInvoiceReceived.getId() + " \t" + lInvoiceReceived.getInvoiceNumber() + "\t " + lInvoiceReceived.getProduct().getDisplayedName()
+        Log.i(LOG_TAG, "Received Invoice from DB" + lInvoiceReceived.getId() + " \t" + lInvoiceReceived.getInvoiceNumber() + "\t " + lInvoiceReceived.getProduct().getDisplayedName()
         );
 
-        CustomAdapter adapter = new CustomAdapter(this,
-                lProductArray);
+        final CustomAdapter adapter = new CustomAdapter(this,
+                productsList);
         setListAdapter(adapter);
+
+        Button lRefreshButton = (Button)findViewById(R.id.refresh_button);
+        lRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productsList = productDao.queryForAll();
+
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         Log.i(LOG_TAG, "Done with page at " + System.currentTimeMillis());
     }
 

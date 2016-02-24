@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.suvp.shop.R;
 
+import java.util.List;
+
 import DataBase.ManagedObjects.Product;
 
 /**
@@ -17,9 +19,9 @@ import DataBase.ManagedObjects.Product;
 public class CustomAdapter extends ArrayAdapter<Product> {
 
     private final Context context;
-    private final Product[] values;
+    private final List<Product> values;
 
-    public CustomAdapter(Context aInContext, Product[] aInValues)
+    public CustomAdapter(Context aInContext, List<Product> aInValues)
     {
         super(aInContext,-1 , aInValues);
         context = aInContext;
@@ -33,7 +35,7 @@ public class CustomAdapter extends ArrayAdapter<Product> {
         View rowView = inflater.inflate(R.layout.list_item, parent, false);
         TextView firstTextView = (TextView)(rowView.findViewById(R.id.list_firstLine));
         TextView secondTextView = (TextView)(rowView.findViewById(R.id.list_secondLine));
-        Product lProduct = values[position];
+        Product lProduct = values.get(position);
 
         firstTextView.setText(lProduct.getDisplayedName());
         secondTextView.setText(lProduct.getType().getType());
