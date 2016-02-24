@@ -15,6 +15,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Product;
 import Resource.ProductEnum;
 
@@ -28,6 +29,7 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
     // the DAO object we use to access the SimpleData table
     private Dao<Product, Integer> productDao = null;
     private RuntimeExceptionDao<Product, Integer> productRuntimeDao = null;
+    private RuntimeExceptionDao<Invoice, Integer> invoiceRuntimeDao = null;
 
     public OrmLiteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,7 +43,10 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {
             Log.i(OrmLiteDbHelper.class.getName(), "onCreate");
+
             TableUtils.createTable(connectionSource, Product.class);
+            TableUtils.createTable(connectionSource, Invoice.class);
+
             Log.i(OrmLiteDbHelper.class.getName(), "created Table Database Schema ");
         } catch (SQLException e) {
             Log.e(OrmLiteDbHelper.class.getName(), "Can't create database", e);
@@ -80,17 +85,6 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * Returns the Database Access Object (DAO) for our SimpleData class. It will create it or just give the cached
-     * value.
-     */
-    public Dao<Product, Integer> getDao() throws SQLException {
-        if (productDao == null) {
-            productDao = getDao(Product.class);
-        }
-        return productDao;
-    }
-
-    /**
      * Returns the RuntimeExceptionDao (Database Access Object) version of a Dao for our SimpleData class. It will
      * create it or just give the cached value. RuntimeExceptionDao only through RuntimeExceptions.
      */
@@ -99,6 +93,15 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
             productRuntimeDao = getRuntimeExceptionDao(Product.class);
         }
         return productRuntimeDao;
+    }
+
+    public RuntimeExceptionDao<Invoice, Integer> getInvoiceDataDao()
+    {
+        if (invoiceRuntimeDao == null)
+        {
+            invoiceRuntimeDao = getRuntimeExceptionDao(Invoice.class);
+        }
+        return invoiceRuntimeDao;
     }
 
     /**

@@ -44,6 +44,11 @@ public enum HP
         return $HpDoubleList;
     }
 
+    public String getString()
+    {
+        return displayedName;
+    }
+
     public double getHpFloat()
     {
         return numericValue;

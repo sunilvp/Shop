@@ -3,6 +3,8 @@ package DataBase.ManagedObjects;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
+import java.io.Serializable;
+
 import Resource.BodyType;
 import Resource.HP;
 import Resource.Phase;
@@ -12,7 +14,7 @@ import Resource.Type;
 /**
  * Created by suvp on 1/16/2016.
  */
-public class Product
+public class Product implements Serializable
 {
     @DatabaseField(generatedId = true)
     int id;
