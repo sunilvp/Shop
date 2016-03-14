@@ -2,13 +2,17 @@ package DataBase.ManagedObjects;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.ForeignCollectionField;
 
+import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 /**
  * Created by suvp on 2/23/2016.
  */
-public class Invoice {
+public class Invoice  implements Serializable
+{
     @DatabaseField(generatedId = true)
     int id;
 
@@ -21,7 +25,10 @@ public class Invoice {
     @DatabaseField
     Date date;
 
-    Invoice()
+    @ForeignCollectionField
+    private Collection<Item> itemList;
+
+    public Invoice()
     {}
 
     public Invoice(int aInInvoiceNumber, Product aInProduct,Date aInDate)
@@ -31,12 +38,12 @@ public class Invoice {
         date = aInDate;
     }
 
-    public int getId() {
-        return id;
+    public Collection<Item> getItemList() {
+        return itemList;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setItemList(Collection<Item> itemList) {
+        this.itemList = itemList;
     }
 
     public int getInvoiceNumber() {
