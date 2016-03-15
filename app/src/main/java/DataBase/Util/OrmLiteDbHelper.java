@@ -15,7 +15,10 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import DataBase.ManagedObjects.Bill;
+import DataBase.ManagedObjects.Customer;
 import DataBase.ManagedObjects.Invoice;
+import DataBase.ManagedObjects.Item;
 import DataBase.ManagedObjects.Product;
 import Resource.ProductEnum;
 
@@ -46,6 +49,9 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
 
             TableUtils.createTable(connectionSource, Product.class);
             TableUtils.createTable(connectionSource, Invoice.class);
+            TableUtils.createTable(connectionSource, Customer.class);
+            TableUtils.createTable(connectionSource, Bill.class);
+            TableUtils.createTable(connectionSource, Item.class);
 
             Log.i(OrmLiteDbHelper.class.getName(), "created Table Database Schema ");
         } catch (SQLException e) {

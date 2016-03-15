@@ -48,7 +48,7 @@ public class ProductListViewActivity extends ListActivity
         productsList = productDao.queryForAll();
 
         Date lDate = new Date();
-        Invoice lInvoice = new Invoice(1234, productsList.get(0), new Date());
+        Invoice lInvoice = new Invoice(1234, new Date());
         invoiceDao.create(lInvoice);
         Log.i(LOG_TAG, "Creating Invoice Object with data ");
 
@@ -58,8 +58,7 @@ public class ProductListViewActivity extends ListActivity
         Date lDateReceived = lInvoiceReceived.getDate();
         Log.i(LOG_TAG, "Received Invoice from DB" + lDateReceived.getTime());
 
-        Log.i(LOG_TAG, "Received Invoice from DB" + lInvoiceReceived.getId() + " \t" + lInvoiceReceived.getInvoiceNumber() + "\t " + lInvoiceReceived.getProduct().getDisplayedName()
-        );
+        Log.i(LOG_TAG, "Received Invoice from DB" + " \t" + lInvoiceReceived.getInvoiceNumber());
 
         final CustomAdapter adapter = new CustomAdapter(this,
                 productsList);

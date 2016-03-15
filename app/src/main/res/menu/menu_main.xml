@@ -6,4 +6,7 @@ tools:context="com.example.suvp.test.MainActivity">
 
 <item android:id="@+id/viewProducts"
     android:title="@string/view_products" />
+
+<item android:id="@+id/invoiceMenu"
+    android:title="@string/invoice_menu" />
 </menu>

@@ -15,9 +15,6 @@ public class Customer implements Serializable
     int id;
 
     @DatabaseField
-    String displayedName;
-
-    @DatabaseField
     private String customerName;
 
     @DatabaseField
@@ -26,7 +23,7 @@ public class Customer implements Serializable
     @DatabaseField
     private String phoneNumber;
 
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private Collection<Bill> bills;
 
     public Collection<Bill> getBills() {
@@ -46,14 +43,6 @@ public class Customer implements Serializable
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getDisplayedName() {
-        return displayedName;
-    }
-
-    public void setDisplayedName(String displayedName) {
-        this.displayedName = displayedName;
     }
 
     public String getCustomerName() {

@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity{
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Log.i(LOG_TAG, "Sunil @@@@@ OnCreateOptionsMenu");
+        Log.i(LOG_TAG, "Options Menu Created");
         return true;
     }
 
@@ -38,6 +38,11 @@ public class MainActivity extends ActionBarActivity{
             Intent productViewAcitivty = new Intent(this, ProductListViewActivity.class);
             startActivity(productViewAcitivty);
             return true;
+        }
+        else if(id == R.id.invoiceMenu)
+        {
+            Intent lInvoiceMenuActivity = new Intent(this, InvoiceMenuActivity.class);
+            startActivity(lInvoiceMenuActivity);
         }
 
         return super.onOptionsItemSelected(item);

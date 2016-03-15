@@ -19,22 +19,20 @@ public class Invoice  implements Serializable
     @DatabaseField
     int invoiceNumber;
 
-    @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Product product;
-
-    @DatabaseField
+    @DatabaseField(
+            dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd")
     Date date;
 
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private Collection<Item> itemList;
 
     public Invoice()
     {}
 
-    public Invoice(int aInInvoiceNumber, Product aInProduct,Date aInDate)
+    public Invoice(int aInInvoiceNumber,Date aInDate)
     {
         invoiceNumber = aInInvoiceNumber;
-        product = aInProduct;
         date = aInDate;
     }
 
@@ -52,14 +50,6 @@ public class Invoice  implements Serializable
 
     public void setInvoiceNumber(int invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Date getDate() {

@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="view_products">Products</string>
     <string name="heading_string">Rajeswari Enterprises</string>
+    <string name="invoice_menu">Invoice</string>
 </resources>

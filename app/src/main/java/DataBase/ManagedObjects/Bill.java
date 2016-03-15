@@ -1,5 +1,6 @@
 package DataBase.ManagedObjects;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 
@@ -18,19 +19,15 @@ public class Bill implements Serializable
     @DatabaseField
     private String billNo;
 
-    @DatabaseField
+    @DatabaseField(
+            dataType = DataType.DATE_STRING,
+            format = "yyyy-MM-dd")
     private Date billDate;
-
-    @DatabaseField
-    private String customerAddress;
-
-    @DatabaseField
-    private String phoneNumber;
 
     @DatabaseField(foreign = true)
     private Customer customer;
 
-    @ForeignCollectionField
+    @ForeignCollectionField(eager = true)
     private Collection<Item> items;
 
     public Collection<Item> getItems() {
@@ -67,21 +64,4 @@ public class Bill implements Serializable
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
 }
