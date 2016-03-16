@@ -1,4 +1,4 @@
-package com.example.suvp.shop;
+package com.example.suvp.shop.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.suvp.shop.R;
 
 public class MainActivity extends ActionBarActivity{
     private final String LOG_TAG = getClass().getSimpleName();

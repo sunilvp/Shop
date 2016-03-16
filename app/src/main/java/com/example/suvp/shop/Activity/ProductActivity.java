@@ -1,10 +1,11 @@
-package com.example.suvp.shop;
+package com.example.suvp.shop.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.suvp.shop.R;
 
 import java.io.Serializable;
 
