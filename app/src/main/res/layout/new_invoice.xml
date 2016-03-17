@@ -54,4 +54,17 @@
         android:id="@+id/buttonAddItem"
         android:layout_gravity="center_horizontal" />
 
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.example.suvp.shop.Fragments.ItemListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ListView
+        android:id="@+id/itemList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:background="#8a87ea" />
+
 </LinearLayout>

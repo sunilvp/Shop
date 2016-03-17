@@ -16,12 +16,12 @@ import DataBase.ManagedObjects.Product;
 /**
  * Created by suvp on 1/23/2016.
  */
-public class CustomAdapter extends ArrayAdapter<Product> {
+public class CustomProductListAdapter extends ArrayAdapter<Product> {
 
     private final Context context;
     private final List<Product> values;
 
-    public CustomAdapter(Context aInContext, List<Product> aInValues)
+    public CustomProductListAdapter(Context aInContext, List<Product> aInValues)
     {
         super(aInContext,-1 , aInValues);
         context = aInContext;
@@ -32,7 +32,7 @@ public class CustomAdapter extends ArrayAdapter<Product> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.list_item, parent, false);
+        View rowView = inflater.inflate(R.layout.list_product, parent, false);
         TextView firstTextView = (TextView)(rowView.findViewById(R.id.list_firstLine));
         TextView secondTextView = (TextView)(rowView.findViewById(R.id.list_secondLine));
         Product lProduct = values.get(position);

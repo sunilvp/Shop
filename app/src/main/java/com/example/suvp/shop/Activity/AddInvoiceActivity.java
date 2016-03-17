@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.suvp.shop.Fragments.DatePickerFragment;
 import com.example.suvp.shop.R;
 
 import java.util.Calendar;
+
+import General.CustomProductListAdapter;
 
 /**
  * Created by suvp on 3/16/2016.
@@ -32,6 +35,7 @@ public class AddInvoiceActivity extends FragmentActivity {
                 showDatePicker();
             }
         });
+
         Log.i(LOG_TAG, "Invoice Menu Create");
     }
 

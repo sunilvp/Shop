@@ -18,7 +18,7 @@ import java.util.List;
 import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Product;
 import DataBase.Util.OrmLiteDbHelper;
-import General.CustomAdapter;
+import General.CustomProductListAdapter;
 
 /**
  * Created by suvp on 2/20/2016.
@@ -61,7 +61,7 @@ public class ProductListViewActivity extends ListActivity
 
         Log.i(LOG_TAG, "Received Invoice from DB" + " \t" + lInvoiceReceived.getInvoiceNumber());
 
-        final CustomAdapter adapter = new CustomAdapter(this,
+        final CustomProductListAdapter adapter = new CustomProductListAdapter(this,
                 productsList);
         setListAdapter(adapter);
 
@@ -81,9 +81,9 @@ public class ProductListViewActivity extends ListActivity
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Product lSelectedProduct = productsList.get(position);
-        Intent secondAcitivityIntent = new Intent(this, ProductActivity.class);
-        secondAcitivityIntent.putExtra(SERIALIZED_PRODUCT, lSelectedProduct);
-        startActivity(secondAcitivityIntent);
+        Intent singleProductViewAcitivity = new Intent(this, ProductActivity.class);
+        singleProductViewAcitivity.putExtra(SERIALIZED_PRODUCT, lSelectedProduct);
+        startActivity(singleProductViewAcitivity);
     }
 
     @Override
