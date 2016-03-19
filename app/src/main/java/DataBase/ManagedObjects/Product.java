@@ -16,6 +16,13 @@ import Resource.Type;
  */
 public class Product implements Serializable
 {
+    public static String COL_DISPLAYED_NAME = "displayedName";
+    public static String COL_TYPEDISPLAYED_NAME = "type";
+    public static String COL_BODYTYPE = "bodyType";
+    public static String COL_PHASE = "phase";
+    public static String COL_HP = "hp";
+    public static String COL_STAGE = "stage";
+
     @DatabaseField(generatedId = true)
     int id;
 
@@ -96,5 +103,26 @@ public class Product implements Serializable
 
     public void setPhase(Phase phase) {
         this.phase = phase;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Product)
+        {
+            Product lProduct =(Product)o;
+            if(((Product) o).getDisplayedName().equals(displayedName)
+                    && ((Product) o).getType() == type)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return  false;
+        }
     }
 }

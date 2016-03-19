@@ -1,6 +1,8 @@
 package com.example.suvp.shop.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -22,20 +24,30 @@ import General.CustomProductListAdapter;
  */
 public class AddInvoiceActivity extends FragmentActivity {
     private final String LOG_TAG = getClass().getSimpleName();
+    private final Context context_ = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_invoice);
 
-        Button lButton = (Button)findViewById(R.id.buttonSelectDate);
-        lButton.setOnClickListener(new View.OnClickListener() {
+        Button lSelectButton = (Button)findViewById(R.id.buttonSelectDate);
+        lSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
             }
         });
 
+        Button lAddButton = (Button)findViewById(R.id.buttonAddItem);
+        lAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent lSearchProductActivity = new Intent(context_, SearchProductActivity.class);
+                startActivity(lSearchProductActivity);
+            }
+        });
         Log.i(LOG_TAG, "Invoice Menu Create");
     }
 

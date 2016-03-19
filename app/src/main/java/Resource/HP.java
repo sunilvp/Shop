@@ -24,7 +24,7 @@ public enum HP
     private String displayedName;
     private Double numericValue;
 
-    public List<String> getHPStringList()
+    public static List<String> getHPStringList()
     {
         List<String> $HpStringList = new LinkedList<>();
         for(HP lHp : HP.values())
@@ -34,7 +34,7 @@ public enum HP
         return $HpStringList;
     }
 
-    public List<Double> getHpDoubleList()
+    public static List<Double> getHpDoubleList()
     {
         List<Double> $HpDoubleList = new LinkedList<>();
         for(HP lHp : HP.values())

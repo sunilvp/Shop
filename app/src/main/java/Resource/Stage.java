@@ -15,18 +15,28 @@ public enum Stage
     STAGE_28 (28),
     STAGE_30 (30);
 
-    private int stageValue;
+    private Integer stageValue;
     Stage(int aInStage)
     {
         stageValue = aInStage;
     }
 
-    private static List<Integer> getAllStages()
+    public static List<Integer> getAllStages()
     {
         List<Integer> $stageList = new ArrayList<>();
         for(Stage lStage: Stage.values())
         {
             $stageList.add(lStage.stageValue);
+        }
+        return $stageList;
+    }
+
+    public static List<String> getAllStagesString()
+    {
+        List<String> $stageList = new ArrayList<>();
+        for(Stage lStage: Stage.values())
+        {
+            $stageList.add(lStage.stageValue.toString());
         }
         return $stageList;
     }

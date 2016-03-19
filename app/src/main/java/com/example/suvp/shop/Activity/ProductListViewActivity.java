@@ -7,13 +7,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.suvp.shop.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Product;
@@ -35,47 +41,47 @@ public class ProductListViewActivity extends ListActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        final RuntimeExceptionDao<Product, Integer> lProductDao = getHelper().getProductDAO();
         setContentView(R.layout.product__list_view);
-        getDbData();
-    }
-
-    private void getDbData()
-    {
-        // get our dao
-        final RuntimeExceptionDao<Product, Integer> productDao = getHelper().getProductDAO();
-        final RuntimeExceptionDao<Invoice, Integer> invoiceDao = getHelper().getInvoiceDataDao();
-
-        // query for all of the data objects in the database
-        productsList = productDao.queryForAll();
-
-        Date lDate = new Date();
-        Invoice lInvoice = new Invoice(1234, new Date());
-        invoiceDao.create(lInvoice);
-        Log.i(LOG_TAG, "Creating Invoice Object with data ");
-
-        // query for all of the data objects in the database
-        List<Invoice> listInvoice = invoiceDao.queryForAll();
-        Invoice lInvoiceReceived =  listInvoice.get(0);
-        Date lDateReceived = lInvoiceReceived.getDate();
-        Log.i(LOG_TAG, "Received Invoice from DB" + lDateReceived.getTime());
-
-        Log.i(LOG_TAG, "Received Invoice from DB" + " \t" + lInvoiceReceived.getInvoiceNumber());
+        Serializable lSerProduct = getIntent().getSerializableExtra(SearchProductActivity.SERIALIZED_PRODUCTS_SELECTED);
+        if(lSerProduct == null)
+        {
+            Log.i(LOG_TAG, "Activity called from menu view");
+            productsList = getDbData(lProductDao);
+        }
+        else
+        {
+            Log.i(LOG_TAG, "Activity called from View Selected Items");
+            Object[] lReceivedProductArray = (Object[])lSerProduct;
+            List<Product> lReceivedList = new ArrayList<>();
+            if(lReceivedProductArray != null && lReceivedProductArray.length > 0)
+            {
+                for(Object lObject : lReceivedProductArray)
+                {
+                    lReceivedList.add((Product)lObject);
+                }
+                productsList = lReceivedList;
+            }
+            else
+            {
+                productsList = new LinkedList<>();
+                Toast.makeText(this, "No ItemSelected", Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "No Items selected");
+            }
+        }
 
         final CustomProductListAdapter adapter = new CustomProductListAdapter(this,
                 productsList);
         setListAdapter(adapter);
+    }
 
-        Button lRefreshButton = (Button)findViewById(R.id.refresh_button);
-        lRefreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                productsList = productDao.queryForAll();
+    private List<Product> getDbData(RuntimeExceptionDao<Product, Integer> aInProductDao)
+    {
+        // get our dao
+        final RuntimeExceptionDao<Invoice, Integer> invoiceDao = getHelper().getInvoiceDataDao();
 
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        Log.i(LOG_TAG, "Done with page at " + System.currentTimeMillis());
+        // query for all of the data objects in the database
+        return aInProductDao.queryForAll();
     }
 
     @Override

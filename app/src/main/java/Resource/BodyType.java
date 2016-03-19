@@ -18,7 +18,7 @@ public enum BodyType
 
     private String displayString;
 
-    public List<String>  getBodyTypeDisplayString()
+    public static List<String> getBodyTypeDisplayString()
     {
         List<String> $bodyDisplayList = new LinkedList<>();
         for(BodyType lBodyType : BodyType.values())
