@@ -47,18 +47,26 @@
             android:editable="false" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Items"
-        android:id="@+id/buttonAddItem"
-        android:layout_gravity="center_horizontal" />
-
-    <fragment
-        android:id="@+id/fragment1"
-        android:name="com.example.suvp.shop.Fragments.ItemListFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center|right"
+        android:gravity="center_horizontal">
+            <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Items"
+            android:id="@+id/buttonAddItem"
+            android:layout_gravity="left" />
+
+            <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/buttonAddSave"
+            android:layout_gravity="right" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/itemList"

@@ -41,4 +41,10 @@ public class CustomProductListAdapter extends ArrayAdapter<Product> {
         secondTextView.setText(lProduct.getType().getType());
         return rowView;
     }
+
+    public List<Product> getProductList()
+    {
+        return values;
+    }
+
 }

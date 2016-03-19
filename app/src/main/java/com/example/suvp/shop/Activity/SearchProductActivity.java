@@ -43,6 +43,7 @@ public class SearchProductActivity extends ListActivity
 
     public final static String SERIALIZED_PRODUCT = "productPassed";
     public final static String SERIALIZED_PRODUCTS_SELECTED = "productSelectedToBeShown";
+    public final static String SERIALIZED_PRODUCTS_FINALY_SELECTED = "productSelectedDone";
 
     private OrmLiteDbHelper dbHelper_;
     private final Context context = this;
@@ -68,7 +69,11 @@ public class SearchProductActivity extends ListActivity
         //Action to be performed on clicking search action
         setActionListenerForSearch(adapter);
 
-        setActionListenerForViewSelected(adapter);
+        //When View Selected Items Button is clicked
+        setActionListenerForViewSelected();
+
+        //When Done Button is clicked
+        setActionListenerForDone();
 
         //ItemOnClickAction
         setListItemActions(adapter);
@@ -117,7 +122,7 @@ public class SearchProductActivity extends ListActivity
         });
     }
 
-    private void setActionListenerForViewSelected(final CustomProductListAdapter aInAdapter)
+    private void setActionListenerForViewSelected()
     {
         Button lSelectedProductsButton = (Button)findViewById(R.id.buttonSelectedProducts);
         lSelectedProductsButton.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +137,28 @@ public class SearchProductActivity extends ListActivity
                 else
                 {
                     Toast.makeText(context, "No ItemSelected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setActionListenerForDone()
+    {
+        Button lDoneButton = (Button)findViewById(R.id.buttonDone);
+        lDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent doneResult = new Intent();
+                if(selectedProductList != null && selectedProductList.size() > 0 )
+                {
+                    doneResult.putExtra(SERIALIZED_PRODUCTS_FINALY_SELECTED, selectedProductList.toArray());
+                    setResult(RESULT_OK, doneResult);
+                    finish();
+                }
+                else
+                {
+                    setResult(RESULT_CANCELED, doneResult );
+                    finish();
                 }
             }
         });

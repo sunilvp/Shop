@@ -29,8 +29,8 @@ public class ItemListFragment extends ListFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         setListAdapter(new CustomProductItemListAdapter(getActivity(),  R.layout.list_fragment_layout, -1));
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override

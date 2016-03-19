@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.suvp.shop.R;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import DataBase.ManagedObjects.Product;
@@ -18,7 +19,7 @@ import DataBase.ManagedObjects.Product;
  */
 public class CustomProductItemListAdapter extends ArrayAdapter<Product>
 {
-    private List<Product>  productList;
+    private List<Product>  productList = new LinkedList<>();
     private Context context;
 
     public CustomProductItemListAdapter(Context aInContext, int resource, int textViewResourceId)

@@ -17,7 +17,7 @@ public class Invoice  implements Serializable
     int id;
 
     @DatabaseField
-    int invoiceNumber;
+    String invoiceNumber;
 
     @DatabaseField(
             dataType = DataType.DATE_STRING,
@@ -30,7 +30,7 @@ public class Invoice  implements Serializable
     public Invoice()
     {}
 
-    public Invoice(int aInInvoiceNumber,Date aInDate)
+    public Invoice(String aInInvoiceNumber,Date aInDate)
     {
         invoiceNumber = aInInvoiceNumber;
         date = aInDate;
@@ -44,11 +44,11 @@ public class Invoice  implements Serializable
         this.itemList = itemList;
     }
 
-    public int getInvoiceNumber() {
+    public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
-    public void setInvoiceNumber(int invoiceNumber) {
+    public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
 
