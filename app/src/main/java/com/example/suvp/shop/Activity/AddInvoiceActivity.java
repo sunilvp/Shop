@@ -2,7 +2,6 @@ package com.example.suvp.shop.Activity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,14 +12,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.suvp.shop.Fragments.DatePickerFragment;
-import com.example.suvp.shop.Fragments.ItemListFragment;
 import com.example.suvp.shop.R;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,8 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import DataBase.ManagedObjects.Invoice;
+import DataBase.ManagedObjects.Item;
 import DataBase.ManagedObjects.Product;
-import General.CustomProductItemListAdapter;
+import DataBase.Util.OrmLiteDbHelper;
 import General.CustomProductListAdapter;
 
 /**
@@ -42,7 +42,9 @@ public class AddInvoiceActivity extends FragmentActivity
     private final Context context_ = this;
     public final static String SERIALIZED_PRODUCT = "productPassed";
 
-    Date selectedDate = new Date();
+    private OrmLiteDbHelper dbHelper_;
+
+    Date selectedDate;
     CustomProductListAdapter customListAdapter;
 
     static final int REQUEST_CODE_FOR_SELECTE_PRODUCT = 0;
@@ -50,6 +52,8 @@ public class AddInvoiceActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Calendar calender = Calendar.getInstance();
+        selectedDate = calender.getTime();
         setContentView(R.layout.new_invoice);
 
         setDateButtonActionListener();
@@ -72,7 +76,7 @@ public class AddInvoiceActivity extends FragmentActivity
         TextView lDateSelectedTextView = (TextView)findViewById(R.id.textFieldDate);
 
         StringBuffer lSelectedDate = new StringBuffer();
-        lSelectedDate.append(selectedDate.getDay()).append(":").append(selectedDate.getMonth()).append(":").append(selectedDate.getYear());
+        lSelectedDate.append(selectedDate.getDate()).append(":").append(selectedDate.getMonth()).append(":").append(selectedDate.getYear());
         lDateSelectedTextView.setText(lSelectedDate);
     }
 
@@ -83,6 +87,7 @@ public class AddInvoiceActivity extends FragmentActivity
          * Set Up Current Date Into dialog
          */
         Calendar calender = Calendar.getInstance();
+        calender.getTime();
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
         args.putInt("month", calender.get(Calendar.MONTH));
@@ -105,7 +110,7 @@ public class AddInvoiceActivity extends FragmentActivity
             StringBuffer lSelectedDate = new StringBuffer();
             lSelectedDate.append(dayOfMonth).append(":").append(monthOfYear).append(":").append(year);
             lDateSelectedTextView.setText(lSelectedDate);
-            selectedDate = new Date(year, monthOfYear,dayOfMonth);
+            selectedDate = new Date(year, monthOfYear, dayOfMonth);
         }
     };
 
@@ -193,14 +198,30 @@ public class AddInvoiceActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 List<Product> productList = customListAdapter.getProductList();
-                TextView lTextView = (TextView)findViewById(R.id.textViewInvoiceNumber);
-                String lInvoiceNumber = (String)lTextView.getText();
+                TextView lTextView = (TextView)findViewById(R.id.editTextInvoiceNumber);
+                String lInvoiceNumber = lTextView.getText().toString();
                 Boolean lIsValid = validate(productList, lInvoiceNumber);
                 if(lIsValid)
                 {
                     Invoice lNewInvoice = new Invoice();
                     lNewInvoice.setInvoiceNumber(lInvoiceNumber);
                     lNewInvoice.setDate(selectedDate);
+
+                    RuntimeExceptionDao<Invoice, Integer> lInvoiceDao=  getHelper().getInvoiceDataDao();
+                    RuntimeExceptionDao<Item, Integer> lItemDao =  getHelper().getItemDao();
+                    lInvoiceDao.create(lNewInvoice);
+
+                    List<Item> lItemList = new LinkedList<Item>();
+                    for(Product lProduct: productList)
+                    {
+                        Item lItem = new Item();
+                        lItem.setProduct(lProduct);
+                        lItem.setInvoice(lNewInvoice);
+                        lItemDao.create(lItem);
+                        lItemList.add(lItem);
+                    }
+                    Toast.makeText(context_, "Invoice Saved", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });
@@ -220,11 +241,29 @@ public class AddInvoiceActivity extends FragmentActivity
             lErrorMesage.append("Please Select Product.\n") ;
         }
 
-        if(lErrorMesage.length() <= 0)
+        if(lErrorMesage.length() > 0)
         {
             Toast.makeText(this, lErrorMesage, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbHelper_ != null) {
+            OpenHelperManager.releaseHelper();
+            dbHelper_ = null;
+        }
+    }
+
+    private OrmLiteDbHelper getHelper() {
+        if (dbHelper_ == null) {
+            dbHelper_ =
+                    OpenHelperManager.getHelper(this, OrmLiteDbHelper.class);
+        }
+        return dbHelper_;
     }
 }

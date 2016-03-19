@@ -33,6 +33,7 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Product, Integer> productDao = null;
     private RuntimeExceptionDao<Product, Integer> productRuntimeDao = null;
     private RuntimeExceptionDao<Invoice, Integer> invoiceRuntimeDao = null;
+    private RuntimeExceptionDao<Item, Integer> itemRuntimedao = null;
 
     public OrmLiteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -109,6 +110,15 @@ public class OrmLiteDbHelper extends OrmLiteSqliteOpenHelper {
         }
         return invoiceRuntimeDao;
     }
+    public RuntimeExceptionDao<Item, Integer> getItemDao()
+    {
+        if (itemRuntimedao == null)
+        {
+            itemRuntimedao = getRuntimeExceptionDao(Item.class);
+        }
+        return itemRuntimedao;
+    }
+
 
     /**
      * Close the database connections and clear any cached DAOs.

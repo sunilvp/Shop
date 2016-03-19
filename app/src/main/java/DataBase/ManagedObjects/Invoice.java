@@ -20,11 +20,11 @@ public class Invoice  implements Serializable
     String invoiceNumber;
 
     @DatabaseField(
-            dataType = DataType.DATE_STRING,
-            format = "yyyy-MM-dd")
+    dataType = DataType.DATE_STRING,
+    format = "dd-mm-yyyy")
     Date date;
 
-    @ForeignCollectionField(eager = true)
+    @ForeignCollectionField(eager = true, foreignFieldName = "invoice")
     private Collection<Item> itemList;
 
     public Invoice()
