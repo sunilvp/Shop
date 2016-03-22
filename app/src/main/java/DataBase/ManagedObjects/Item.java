@@ -22,8 +22,17 @@ public class Item implements Serializable
     @DatabaseField(foreign = true)
     private Product product;
 
+    @DatabaseField
+    private String serialNumber;
+
     public Item() {
     }
+
+    public Item(Product aInProduct)
+    {
+        product = aInProduct;
+    }
+
 
     public Invoice getInvoice() {
         return invoice;
@@ -48,4 +57,13 @@ public class Item implements Serializable
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
 }

@@ -1,15 +1,12 @@
 package com.example.suvp.shop.Activity;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -31,7 +28,7 @@ import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Item;
 import DataBase.ManagedObjects.Product;
 import DataBase.Util.OrmLiteDbHelper;
-import General.CustomProductListAdapter;
+import General.CustomProductItemListAdapter;
 
 /**
  * Created by suvp on 3/16/2016.
@@ -45,7 +42,7 @@ public class AddInvoiceActivity extends FragmentActivity
     private OrmLiteDbHelper dbHelper_;
 
     Date selectedDate;
-    CustomProductListAdapter customListAdapter;
+    CustomProductItemListAdapter customListAdapter;
 
     static final int REQUEST_CODE_FOR_SELECTE_PRODUCT = 0;
 
@@ -131,15 +128,17 @@ public class AddInvoiceActivity extends FragmentActivity
         if (requestCode == REQUEST_CODE_FOR_SELECTE_PRODUCT) {
             if (resultCode == RESULT_OK) {
                 Object[] lReceivedProducts = (Object[])data.getExtras().get(SearchProductActivity.SERIALIZED_PRODUCTS_FINALY_SELECTED);
-                List<Product> lSelectedProducts = new ArrayList<>();
+                List<Item> lSelectedItems = new ArrayList<>();
+
                 for(Object lProduct : lReceivedProducts)
                 {
-                    lSelectedProducts.add((Product) lProduct);
+                    Item lItem = new Item((Product)lProduct);
+                    lSelectedItems.add(lItem);
                 }
 
-                customListAdapter.addAll(lSelectedProducts);
+                customListAdapter.addAll(lSelectedItems);
                 customListAdapter.notifyDataSetChanged();
-                Log.i(LOG_TAG, "Selected:"+lSelectedProducts.size());
+                Log.i(LOG_TAG, "Selected:" + lSelectedItems.size());
             }
             else if(resultCode == RESULT_CANCELED)
             {
@@ -151,43 +150,7 @@ public class AddInvoiceActivity extends FragmentActivity
     private void setListActionListener()
     {
         ListView listView = (ListView)findViewById(R.id.itemList);
-        customListAdapter = new CustomProductListAdapter(this, new LinkedList<Product>());
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                List<Product> lProductList = customListAdapter.getProductList();
-                Product lSelectedProduct = lProductList.get(position);
-                Intent singleProductViewActivity = new Intent(context_, ProductActivity.class);
-                singleProductViewActivity.putExtra(SERIALIZED_PRODUCT, lSelectedProduct);
-                startActivity(singleProductViewActivity);
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(LOG_TAG, "Long click of the item");
-
-                final CharSequence[] items = {"Delete"};
-                final List<Product> lProductList = customListAdapter.getProductList();
-
-                final Product lSelectedProduct = lProductList.get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context_);
-
-                builder.setTitle("Action:");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        lProductList.remove(lSelectedProduct);
-                        customListAdapter.notifyDataSetChanged();
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-                //Says if the event is consumed or should be propogated .
-                return true;
-            }
-        });
+        customListAdapter = new CustomProductItemListAdapter(this, new LinkedList<Item>());
         listView.setAdapter(customListAdapter);
     }
 
@@ -197,10 +160,10 @@ public class AddInvoiceActivity extends FragmentActivity
         lSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Product> productList = customListAdapter.getProductList();
+                List<Item> lItemList = customListAdapter.getItemList();
                 TextView lTextView = (TextView)findViewById(R.id.editTextInvoiceNumber);
                 String lInvoiceNumber = lTextView.getText().toString();
-                Boolean lIsValid = validate(productList, lInvoiceNumber);
+                Boolean lIsValid = validate(lItemList, lInvoiceNumber);
                 if(lIsValid)
                 {
                     Invoice lNewInvoice = new Invoice();
@@ -211,15 +174,12 @@ public class AddInvoiceActivity extends FragmentActivity
                     RuntimeExceptionDao<Item, Integer> lItemDao =  getHelper().getItemDao();
                     lInvoiceDao.create(lNewInvoice);
 
-                    List<Item> lItemList = new LinkedList<Item>();
-                    for(Product lProduct: productList)
+                    for(Item lItem: lItemList)
                     {
-                        Item lItem = new Item();
-                        lItem.setProduct(lProduct);
                         lItem.setInvoice(lNewInvoice);
                         lItemDao.create(lItem);
-                        lItemList.add(lItem);
                     }
+
                     Toast.makeText(context_, "Invoice Saved", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -228,7 +188,7 @@ public class AddInvoiceActivity extends FragmentActivity
 
     }
 
-    private boolean validate(List<Product> aInProductList, String aInInvoiceNumber)
+    private boolean validate(List<Item> aInProductList, String aInInvoiceNumber)
     {
         StringBuffer lErrorMesage = new StringBuffer();
         if(aInInvoiceNumber == null || aInInvoiceNumber.isEmpty())
