@@ -29,7 +29,7 @@ import java.util.List;
 
 import DataBase.ManagedObjects.Product;
 import DataBase.Util.OrmLiteDbHelper;
-import General.CustomProductListAdapter;
+import com.example.suvp.shop.Adapters.CustomProductListAdapter;
 import Resource.BodyType;
 import Resource.HP;
 import Resource.Stage;

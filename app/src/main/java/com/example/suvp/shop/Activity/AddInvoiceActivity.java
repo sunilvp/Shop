@@ -28,7 +28,7 @@ import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Item;
 import DataBase.ManagedObjects.Product;
 import DataBase.Util.OrmLiteDbHelper;
-import General.CustomProductItemListAdapter;
+import com.example.suvp.shop.Adapters.CustomProductItemListAdapter;
 
 /**
  * Created by suvp on 3/16/2016.

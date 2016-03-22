@@ -1,4 +1,4 @@
-package General;
+package com.example.suvp.shop.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

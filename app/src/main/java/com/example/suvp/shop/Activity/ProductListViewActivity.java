@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,16 +14,13 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Product;
 import DataBase.Util.OrmLiteDbHelper;
-import General.CustomProductListAdapter;
+import com.example.suvp.shop.Adapters.CustomProductListAdapter;
 
 /**
  * Created by suvp on 2/20/2016.
