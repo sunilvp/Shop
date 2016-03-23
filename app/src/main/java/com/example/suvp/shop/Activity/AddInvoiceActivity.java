@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import DataBase.ManagedObjects.Invoice;
 import DataBase.ManagedObjects.Item;
@@ -41,7 +42,7 @@ public class AddInvoiceActivity extends FragmentActivity
 
     private OrmLiteDbHelper dbHelper_;
 
-    Date selectedDate;
+    Calendar selectedCalendar;
     CustomProductItemListAdapter customListAdapter;
 
     static final int REQUEST_CODE_FOR_SELECTE_PRODUCT = 0;
@@ -49,8 +50,7 @@ public class AddInvoiceActivity extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Calendar calender = Calendar.getInstance();
-        selectedDate = calender.getTime();
+        selectedCalendar = Calendar.getInstance(TimeZone.getTimeZone("IST"));
         setContentView(R.layout.new_invoice);
 
         setDateButtonActionListener();
@@ -73,7 +73,9 @@ public class AddInvoiceActivity extends FragmentActivity
         TextView lDateSelectedTextView = (TextView)findViewById(R.id.textFieldDate);
 
         StringBuffer lSelectedDate = new StringBuffer();
-        lSelectedDate.append(selectedDate.getDate()).append(":").append(selectedDate.getMonth()).append(":").append(selectedDate.getYear());
+        lSelectedDate.append(selectedCalendar.get(Calendar.DAY_OF_MONTH)).append(":").
+                append(selectedCalendar.get(Calendar.MONTH)+1).append(":").
+                append(selectedCalendar.get(Calendar.YEAR));
         lDateSelectedTextView.setText(lSelectedDate);
     }
 
@@ -105,9 +107,11 @@ public class AddInvoiceActivity extends FragmentActivity
         {
             TextView lDateSelectedTextView = (TextView)findViewById(R.id.textFieldDate);
             StringBuffer lSelectedDate = new StringBuffer();
-            lSelectedDate.append(dayOfMonth).append(":").append(monthOfYear).append(":").append(year);
+            lSelectedDate.append(dayOfMonth).append(":").append(monthOfYear+1).append(":").append(year);
             lDateSelectedTextView.setText(lSelectedDate);
-            selectedDate = new Date(year, monthOfYear, dayOfMonth);
+
+            selectedCalendar = Calendar.getInstance(TimeZone.getTimeZone("IST"));
+            selectedCalendar.set(year, monthOfYear, dayOfMonth);
         }
     };
 
@@ -168,7 +172,7 @@ public class AddInvoiceActivity extends FragmentActivity
                 {
                     Invoice lNewInvoice = new Invoice();
                     lNewInvoice.setInvoiceNumber(lInvoiceNumber);
-                    lNewInvoice.setDate(selectedDate);
+                    lNewInvoice.setDate(selectedCalendar.getTime());
 
                     RuntimeExceptionDao<Invoice, Integer> lInvoiceDao=  getHelper().getInvoiceDataDao();
                     RuntimeExceptionDao<Item, Integer> lItemDao =  getHelper().getItemDao();

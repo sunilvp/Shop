@@ -21,7 +21,7 @@ public class Invoice  implements Serializable
 
     @DatabaseField(
     dataType = DataType.DATE_STRING,
-    format = "dd-mm-yyyy")
+    format = "dd-MM-yyyy")
     Date date;
 
     @ForeignCollectionField(eager = true, foreignFieldName = "invoice")

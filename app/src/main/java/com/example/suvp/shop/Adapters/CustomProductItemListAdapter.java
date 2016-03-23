@@ -59,7 +59,6 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
-                Toast.makeText(context, "Edit Listener", Toast.LENGTH_SHORT).show();
                 String input;
                 Item lItem = itemList_.get(position);
                 if((event.getAction() == KeyEvent.ACTION_DOWN))
