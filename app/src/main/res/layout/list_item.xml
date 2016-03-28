@@ -16,6 +16,7 @@
             android:layout_gravity="left"
             android:layout_weight="1"
             android:singleLine="true"
+            android:textStyle="bold"
             />
 
         <LinearLayout android:orientation="vertical"

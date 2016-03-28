@@ -48,6 +48,12 @@
                 <category android:name="android.intent.category.OPENABLE" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.SearchInvoiceActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.OPENABLE" />
+            </intent-filter>
+        </activity>
 
     </application>
 

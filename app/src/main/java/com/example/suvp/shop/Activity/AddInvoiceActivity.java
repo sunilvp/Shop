@@ -20,7 +20,6 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -45,7 +44,7 @@ public class AddInvoiceActivity extends FragmentActivity
     Calendar selectedCalendar;
     CustomProductItemListAdapter customListAdapter;
 
-    static final int REQUEST_CODE_FOR_SELECTE_PRODUCT = 0;
+    static final int REQUEST_CODE_FOR_SELECTED_PRODUCT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,14 +121,14 @@ public class AddInvoiceActivity extends FragmentActivity
             @Override
             public void onClick(View v) {
                 Intent lSearchProductActivity = new Intent(context_, SearchProductActivity.class);
-                startActivityForResult(lSearchProductActivity, REQUEST_CODE_FOR_SELECTE_PRODUCT);
+                startActivityForResult(lSearchProductActivity, REQUEST_CODE_FOR_SELECTED_PRODUCT);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_FOR_SELECTE_PRODUCT) {
+        if (requestCode == REQUEST_CODE_FOR_SELECTED_PRODUCT) {
             if (resultCode == RESULT_OK) {
                 Object[] lReceivedProducts = (Object[])data.getExtras().get(SearchProductActivity.SERIALIZED_PRODUCTS_FINALY_SELECTED);
                 List<Item> lSelectedItems = new ArrayList<>();
@@ -154,7 +153,7 @@ public class AddInvoiceActivity extends FragmentActivity
     private void setListActionListener()
     {
         ListView listView = (ListView)findViewById(R.id.itemList);
-        customListAdapter = new CustomProductItemListAdapter(this, new LinkedList<Item>());
+        customListAdapter = new CustomProductItemListAdapter(this, new LinkedList<Item>(), true);
         listView.setAdapter(customListAdapter);
     }
 

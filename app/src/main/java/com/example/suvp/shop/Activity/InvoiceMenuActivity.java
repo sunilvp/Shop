@@ -32,8 +32,16 @@ public class InvoiceMenuActivity extends AppCompatActivity
         lAddInvoiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent lInvoiceMenuActivity = new Intent(context_, AddInvoiceActivity.class);
-                startActivity(lInvoiceMenuActivity);
+                Intent lInvoiceAddActivity = new Intent(context_, AddInvoiceActivity.class);
+                startActivity(lInvoiceAddActivity);
+            }
+        });
+
+        lViewInvoiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent lInvoiceViewActivity = new Intent(context_, SearchInvoiceActivity.class);
+                startActivity(lInvoiceViewActivity);
             }
         });
     }

@@ -27,14 +27,16 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
 {
     private final Context context;
     private final List<Item> itemList_;
+    private Boolean textViewEnabled;
 
     public final static String SERIALIZED_PRODUCT = "productPassed";
 
-    public CustomProductItemListAdapter(Context aInContext, List<Item> aInValues)
+    public CustomProductItemListAdapter(Context aInContext, List<Item> aInValues, Boolean aInTextViewEnabled)
     {
         super(aInContext,-1 , aInValues);
         context = aInContext;
         itemList_ = aInValues;
+        textViewEnabled = aInTextViewEnabled;
     }
 
     @Override
@@ -42,28 +44,34 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item, parent, false);
-        TextView firstTextView = (TextView)(rowView.findViewById(R.id.listItem_displayedName));
-        TextView secondTextView = (TextView)(rowView.findViewById(R.id.listItem_type));
-        TextView serialNumberTextView = (TextView)(rowView.findViewById(R.id.editText));
+        TextView lFirstTextView = (TextView)(rowView.findViewById(R.id.listItem_displayedName));
+        TextView lSecondTextView = (TextView)(rowView.findViewById(R.id.listItem_type));
+        TextView lSerialNumberTextView = (TextView)(rowView.findViewById(R.id.editText));
+
+        if(textViewEnabled)
+        {
+            lSerialNumberTextView.setEnabled(true);
+        }
+        else
+        {
+            lSerialNumberTextView.setEnabled(false);
+        }
+
         if(itemList_ != null && itemList_.size() >0 )
         {
             Item lItem = itemList_.get(position);
 
-            firstTextView.setText(lItem.getProduct().getDisplayedName());
-            secondTextView.setText(lItem.getProduct().getType().getType());
+            lFirstTextView.setText(lItem.getProduct().getDisplayedName());
+            lSecondTextView.setText(lItem.getProduct().getType().getType());
         }
 
-
-        serialNumberTextView.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        lSerialNumberTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-            {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 String input;
                 Item lItem = itemList_.get(position);
-                if((event.getAction() == KeyEvent.ACTION_DOWN))
-                {
-                    input= v.getText().toString();
+                if ((event.getAction() == KeyEvent.ACTION_DOWN)) {
+                    input = v.getText().toString();
                     lItem.setSerialNumber(input);
                     return true; // consume.
                 }
@@ -71,7 +79,7 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
             }
         });
 
-        firstTextView.setOnClickListener(new View.OnClickListener() {
+        lFirstTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Item lSelectedItem = itemList_.get(position);
@@ -81,7 +89,7 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
             }
         });
 
-        firstTextView.setOnLongClickListener(new View.OnLongClickListener() {
+        lFirstTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(context, "Long Click", Toast.LENGTH_SHORT).show();
