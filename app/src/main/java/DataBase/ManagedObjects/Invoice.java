@@ -24,7 +24,7 @@ public class Invoice  implements Serializable
     format = "dd-MM-yyyy")
     Date date;
 
-    @ForeignCollectionField(eager = true, foreignFieldName = "invoice")
+    @ForeignCollectionField(eager = true, maxEagerLevel = 10, foreignFieldName = "invoice")
     private Collection<Item> itemList;
 
     public Invoice()

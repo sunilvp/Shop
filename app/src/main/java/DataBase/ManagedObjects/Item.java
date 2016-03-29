@@ -13,13 +13,13 @@ public class Item implements Serializable
     @DatabaseField(generatedId = true)
     int id;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Invoice invoice;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Bill bill;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Product product;
 
     @DatabaseField

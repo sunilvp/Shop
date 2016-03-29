@@ -8,7 +8,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,20 +22,18 @@ import DataBase.ManagedObjects.Item;
 /**
  * Created by suvp on 3/17/2016.
  */
-public class CustomProductItemListAdapter extends ArrayAdapter<Item>
-{
+public class CustomProductItemListAdapter extends ArrayAdapter<Item> {
     private final Context context;
     private final List<Item> itemList_;
-    private Boolean textViewEnabled;
+    private Boolean editAllowed;
 
     public final static String SERIALIZED_PRODUCT = "productPassed";
 
-    public CustomProductItemListAdapter(Context aInContext, List<Item> aInValues, Boolean aInTextViewEnabled)
-    {
-        super(aInContext,-1 , aInValues);
+    public CustomProductItemListAdapter(Context aInContext, List<Item> aInValues, Boolean aInTextViewEnabled) {
+        super(aInContext, -1, aInValues);
         context = aInContext;
         itemList_ = aInValues;
-        textViewEnabled = aInTextViewEnabled;
+        editAllowed = aInTextViewEnabled;
     }
 
     @Override
@@ -44,22 +41,22 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item, parent, false);
-        TextView lFirstTextView = (TextView)(rowView.findViewById(R.id.listItem_displayedName));
-        TextView lSecondTextView = (TextView)(rowView.findViewById(R.id.listItem_type));
-        TextView lSerialNumberTextView = (TextView)(rowView.findViewById(R.id.editText));
+        TextView lFirstTextView = (TextView) (rowView.findViewById(R.id.listItem_displayedName));
+        TextView lSecondTextView = (TextView) (rowView.findViewById(R.id.listItem_type));
+        TextView lSerialNumberTextView = (TextView) (rowView.findViewById(R.id.editText));
 
-        if(textViewEnabled)
-        {
+        if (editAllowed) {
             lSerialNumberTextView.setEnabled(true);
-        }
-        else
-        {
+        } else {
             lSerialNumberTextView.setEnabled(false);
         }
 
-        if(itemList_ != null && itemList_.size() >0 )
-        {
+        if (itemList_ != null && itemList_.size() > 0) {
             Item lItem = itemList_.get(position);
+
+            if (!editAllowed) {
+                lSerialNumberTextView.setText(lItem.getSerialNumber());
+            }
 
             lFirstTextView.setText(lItem.getProduct().getDisplayedName());
             lSecondTextView.setText(lItem.getProduct().getType().getType());
@@ -89,31 +86,30 @@ public class CustomProductItemListAdapter extends ArrayAdapter<Item>
             }
         });
 
-        lFirstTextView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(context, "Long Click", Toast.LENGTH_SHORT).show();
-                final CharSequence[] items = {"Delete"};
+        if (editAllowed) {
+            lFirstTextView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    final CharSequence[] items = {"Delete"};
 
-                final Item lSelectedItem = itemList_.get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    final Item lSelectedItem = itemList_.get(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-                builder.setTitle("Action:");
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        itemList_.remove(lSelectedItem);
-                        notifyDataSetChanged();
-                    }
-                });
+                    builder.setTitle("Action:");
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            itemList_.remove(lSelectedItem);
+                            notifyDataSetChanged();
+                        }
+                    });
 
-                AlertDialog alert = builder.create();
-                alert.show();
-                //Says if the event is consumed or should be propogated .
-                return true;
-            }
-        });
-
-
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    //Says if the event is consumed or should be propogated .
+                    return true;
+                }
+            });
+        }
         return rowView;
     }
 
