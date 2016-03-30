@@ -101,10 +101,10 @@ public class SearchProductActivity extends ListActivity
                     PreparedQuery<Product> preparedQuery = null;
 
                     preparedQuery = lQueryBuilder.prepare();
-                    List<Product> lproductsReceived = productDao.query(preparedQuery);
-                    if (lproductsReceived != null && lproductsReceived.size() > 0) {
-                        Log.i(LOG_TAG, "productsReceived found " + lproductsReceived.size());
-                        for (Product ldbProduct : lproductsReceived) {
+                    List<Product> lProductsReceived = productDao.query(preparedQuery);
+                    if (lProductsReceived != null && lProductsReceived.size() > 0) {
+                        Log.i(LOG_TAG, "productsReceived found " + lProductsReceived.size());
+                        for (Product ldbProduct : lProductsReceived) {
                             if (!productListDb.contains(ldbProduct)) {
                                 productListDb.add(ldbProduct);
                             }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,7 +20,11 @@ import com.example.suvp.shop.General.Utility;
 import com.example.suvp.shop.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,6 +46,8 @@ public class SearchInvoiceActivity extends FragmentActivity
     CustomInvoiceListAdapter customListAdapter;
 
     public final static String SERIALIZED_INVOICE = "invoicePassed";
+    private final String LOG_TAG = getClass().getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -104,10 +111,39 @@ public class SearchInvoiceActivity extends FragmentActivity
 
     private void populateResultToList()
     {
+        customListAdapter.reInitList();
         RuntimeExceptionDao<Invoice, Integer> lInvoiceDao = getHelper().getInvoiceDataDao();
-        List<Invoice> lInvoiceList  = lInvoiceDao.queryForAll();
-        customListAdapter.addAll(lInvoiceList);
-        customListAdapter.notifyDataSetChanged();
+        if(invoiceNumberCheckBox.isChecked())
+        {
+            String lSerialNumber =  serialNumberText.getText().toString();
+            QueryBuilder<Invoice, Integer> lQueryBuilder = lInvoiceDao.queryBuilder();
+            final Where<Invoice, Integer> lWhere = lQueryBuilder.where();
+            try {
+                lWhere.eq(Invoice.COL_INVOICE_NUMBER, lSerialNumber);
+                PreparedQuery<Invoice> preparedQuery = null;
+
+                preparedQuery = lQueryBuilder.prepare();
+                List<Invoice> lInvoiceReceived = lInvoiceDao.query(preparedQuery);
+
+                if(lInvoiceReceived == null || lInvoiceReceived.size() <= 0)
+                {
+                    Toast.makeText(context, "No Invoice Present", Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "NO INVOICE FOUND WITH FOR THE QUERY");
+                }
+                else
+                {
+                    customListAdapter.addAll(lInvoiceReceived);
+                }
+            } catch (SQLException e) {
+                Log.e(LOG_TAG, "Failed to generate query for the product");
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            List<Invoice> lInvoiceList = lInvoiceDao.queryForAll();
+            customListAdapter.addAll(lInvoiceList);
+        }
     }
 
     private void setListActionListener()

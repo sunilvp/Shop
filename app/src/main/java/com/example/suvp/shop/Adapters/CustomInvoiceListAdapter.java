@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.suvp.shop.General.Utility;
 import com.example.suvp.shop.R;
 
+import java.util.Collection;
 import java.util.List;
 
 import DataBase.ManagedObjects.Invoice;
@@ -52,8 +53,21 @@ public class CustomInvoiceListAdapter extends ArrayAdapter<Invoice>
         return rowView;
     }
 
+    public void reInitList()
+    {
+        clear();
+        notifyDataSetChanged();
+    }
+
     public List<Invoice> getItemList()
     {
         return invoiceList_;
+    }
+
+    @Override
+    public void addAll(Collection<? extends Invoice> aInInvoiceList)
+    {
+        super.addAll(aInInvoiceList);
+        notifyDataSetChanged();
     }
 }

@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class Invoice  implements Serializable
 {
+
+    public static String COL_INVOICE_NUMBER = "invoiceNumber";
+
     @DatabaseField(generatedId = true)
     int id;
 
